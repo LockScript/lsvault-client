@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# LSVault-Client
 
-## Getting Started
+LSVault-Client is a secure password manager built with React and TypeScript. It uses local storage to store your passwords, which are encrypted using a vault key.
 
-First, run the development server:
+## lsvault-server
+LSVault-Server is the backend server for LSVault-Client. It provides the necessary APIs for user authentication, password storage, and encryption.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+You can find the repository for LSVault-Server [here](https://github.com/cvs0/lsvault-server).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+LSVault-Client offers the following features:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Secure password storage: All passwords are stored securely in your browser's local storage.
+- Encryption: Passwords are encrypted using a vault key, ensuring maximum security.
+- Password generator: Generate strong and unique passwords with options to include special characters, numbers, and avoid similar characters.
+- Password management: Easily add, edit, and delete password entries.
 
-## Learn More
+## Installation
+To install and run LSVault-Client, follow these steps:
 
-To learn more about Next.js, take a look at the following resources:
+1. Clone the repository:
+    ```
+    git clone https://github.com/cvs0/lsvault-client.git
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Navigate to the project directory:
+    ```
+    cd lsvault-client
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+3. Install the dependencies:
+    ```
+    npm install
+    ```
 
-## Deploy on Vercel
+4. Start the development server:
+    ```
+    npm start
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. Open your browser and go to `http://localhost:3000` to access LSVault-Client.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Note: Make sure you have Node.js and npm installed on your machine before proceeding with the installation.
+
+## Components
+
+The main component is [`Vault`](src/components/Vault.tsx), which handles the password entries and the password generator.
+
+Additionally, we have the following components:
+
+- [`LoginForm`](src/components/LoginForm.tsx): Handles the login functionality.
+- [`RegistrationForm`](src/components/RegistrationForm.tsx): Handles the registration functionality.
+
+## Encryption
+
+The encryption and decryption of the vault are handled by the `encryptVault` and `decryptVault` functions.
+
+## Contributing
+
+Contributions are welcome. If you would like to contribute to LSVault-Client, please follow these steps:
+
+1. Fork the repository by clicking the "Fork" button on the GitHub page.
+2. Clone your forked repository to your local machine:
+    ```
+    git clone https://github.com/LockScript/lsvault-client.git
+    ```
+3. Navigate to the project directory:
+    ```
+    cd lsvault-client
+    ```
+4. Install the dependencies:
+    ```
+    npm install
+    ```
+5. Create a new branch for your changes:
+    ```
+    git checkout -b your-branch-name
+    ```
+6. Make your desired changes to the codebase.
+7. Commit your changes:
+    ```
+    git commit -m "Your commit message"
+    ```
+8. Push your changes to your forked repository:
+    ```
+    git push origin your-branch-name
+    ```
+9. Open a pull request on the original repository to propose your changes.
+
+Please note that all contributions are subject to review and approval by the project maintainers. Thank you for your contribution!
+
+## License
+
+LSVault-Client is licensed under the MIT License.
