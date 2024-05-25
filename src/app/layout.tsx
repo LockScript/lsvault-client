@@ -1,10 +1,8 @@
-"use client";
-
 import { Montserrat } from "next/font/google";
 import { QueryClient, QueryClientProvider } from "react-query";
-import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
 import { ChakraProvider } from "@chakra-ui/react";
+import { Toaster } from "@/components/ui/sonner";
+import "./globals.css";
 
 const inter = Montserrat({ subsets: ["latin"] });
 
