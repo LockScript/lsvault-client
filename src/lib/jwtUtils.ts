@@ -43,3 +43,9 @@ export const isTokenExpired = (): boolean => {
 
   return decodedToken.exp < currentTime;
 };
+
+export const getUserId = (): string | null => {
+  const decodedToken = getDecodedToken();
+
+  return decodedToken ? decodedToken._id : null;
+};

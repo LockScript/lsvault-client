@@ -64,3 +64,31 @@ export function updatePassword(payload: { newPassword: string }) {
         .put(`${userBase}/password`, payload, { withCredentials: true })
         .then((res) => res.data);
 }
+
+/**
+ * Sends a POST request to upload user settings.
+ * @param {string} userId - The user's ID.
+ * @param {Object} settings - The user settings object.
+ * @returns {Promise<any>} - A promise resolving to the response data.
+ */
+export function uploadUserSettings(userId: string, settings: { [key: string]: string }) {
+    const requestBody = {
+        userId,
+        settings
+    };
+
+    return axios
+        .post(`${userBase}/settings`, requestBody, { withCredentials: true })
+        .then((res) => res.data);
+}
+
+export async function getUserSettings(userId: string) {
+    try {
+        const response = await axios.get(`${userBase}/settings/${userId}`);
+        const userSettings = response.data;
+        return userSettings;
+    } catch (error) {
+        console.error(`Failed to fetch user settings: ${error}`);
+        throw error;
+    }
+}

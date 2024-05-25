@@ -8,7 +8,10 @@ import React from "react";
  * @param {BoxProps} props - Additional BoxProps from Chakra UI.
  * @returns {React.ReactNode} - The FormWrapper component with Chakra UI styling.
  */
-function FormWrapper({ children, ...props }: { children: React.ReactNode } & BoxProps) {
+function FormWrapper({
+  children,
+  ...props
+}: { children: React.ReactNode } & BoxProps) {
   return (
     <Box
       w="100%"

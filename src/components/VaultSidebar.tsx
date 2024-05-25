@@ -1,6 +1,7 @@
 "use client";
 
-import { getEmailFromToken } from "@/lib/jwtUtils";
+import { getEmailFromToken, getUserId } from "@/lib/jwtUtils";
+import { Checkbox, Tooltip, useClipboard } from "@chakra-ui/react";
 import { DialogDescription, DialogTrigger } from "@radix-ui/react-dialog";
 import { LayoutDashboard, LogOut, Settings, User } from "lucide-react";
 import { Button } from "./ui/button";
@@ -14,10 +15,24 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
-import { useClipboard, Tooltip } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { getUserSettings, uploadUserSettings } from "@/api";
 
 const VaultSidebar = () => {
   const { hasCopied, onCopy } = useClipboard(getEmailFromToken() || "");
+  const [autoLock, setAutoLock] = useState(false);
+
+  useEffect(() => {
+    const fetchUserSettings = async () => {
+      const userId = getUserId() ?? "";
+      if (userId) {
+        const settings = await getUserSettings(userId);
+        setAutoLock(settings.autoLock === "true");
+      }
+    };
+
+    fetchUserSettings();
+  }, []);
 
   function handleLogout(): void {
     sessionStorage.removeItem("vk");
@@ -52,15 +67,42 @@ const VaultSidebar = () => {
           </div>
           Dashboard
         </div>
-        <div
-          role="menuitem"
-          className="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
-        >
-          <div className="grid mr-4 place-items-center">
-            <Settings />
-          </div>
-          Settings
-        </div>
+        <Dialog>
+          <DialogTrigger>
+            <div
+              role="menuitem"
+              className="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
+            >
+              <div className="grid mr-4 place-items-center">
+                <Settings />
+              </div>
+              Settings
+            </div>
+          </DialogTrigger>
+
+          <DialogContent className="sm:max-w[425px]">
+            <DialogTitle>Settings</DialogTitle>
+            <DialogDescription>
+              Make changes to your settomgs here. Click save when you&apos;re
+              done editing them.
+            </DialogDescription>
+            <Checkbox
+              isChecked={autoLock}
+              onChange={(e) => setAutoLock(e.target.checked)}
+            >
+              Auto Lock
+            </Checkbox>
+            <Button
+              onClick={() =>
+                uploadUserSettings(getUserId() ?? "", {
+                  autoLock: autoLock.toString(),
+                })
+              }
+            >
+              Save
+            </Button>
+          </DialogContent>
+        </Dialog>
 
         <Dialog>
           <DialogTrigger asChild>
