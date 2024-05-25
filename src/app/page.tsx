@@ -1,10 +1,7 @@
-"use client"
-
+import React, { useEffect, useState } from "react";
 import LoginForm from "@/components/LoginForm";
 import RegisterForm from "@/components/RegisterForm";
 import Vault from "@/components/Vault";
-import { useEffect, useState } from "react";
-
 
 export interface VaultItem {
   website: string;
@@ -19,13 +16,13 @@ const Home = () => {
 
   useEffect(() => {
     // Retrieve stored vault data and vault key from sessionStorage on component mount
-    const vault = window.sessionStorage.getItem("vault");
-    const vaultKey = window.sessionStorage.getItem("vk");
+    const storedVault = window.sessionStorage.getItem("vault");
+    const storedVaultKey = window.sessionStorage.getItem("vk");
 
     // Parse and set the vault data if it exists
-    if (vault) {
+    if (storedVault) {
       try {
-        const parsedVault = JSON.parse(vault);
+        const parsedVault = JSON.parse(storedVault);
         setVault(parsedVault);
       } catch (error) {
         // Handle parsing errors
@@ -33,30 +30,30 @@ const Home = () => {
       }
     }
 
-    console.log(vaultKey)
+    console.log(storedVaultKey);
 
     // Set the vault key and switch to the 'vault' step if the vault key exists
-    if (vaultKey) {
-      setVaultKey(vaultKey);
+    if (storedVaultKey) {
+      setVaultKey(storedVaultKey);
       setStep("vault");
     }
   }, []);
-  
+
   return (
-    <main className="">
-        {/* Render different components based on the current step */}
-        {step === "register" && (
-          <RegisterForm setStep={setStep} setVaultKey={setVaultKey} />
-        )}
-        {step === "login" && (
-          <LoginForm
-            setVault={setVault}
-            setStep={setStep}
-            setVaultKey={setVaultKey}
-          />
-        )}
-        {step === "vault" && <Vault vault={vault} vaultKey={vaultKey} />}
-      </main>
+    <main>
+      {/* Render different components based on the current step */}
+      {step === "register" && (
+        <RegisterForm setStep={setStep} setVaultKey={setVaultKey} />
+      )}
+      {step === "login" && (
+        <LoginForm
+          setVault={setVault}
+          setStep={setStep}
+          setVaultKey={setVaultKey}
+        />
+      )}
+      {step === "vault" && <Vault vault={vault} vaultKey={vaultKey} />}
+    </main>
   );
 };
 
