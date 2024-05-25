@@ -1,5 +1,3 @@
-"use client";
-
 import { VaultItem } from "@/app/page";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -105,10 +103,21 @@ function LoginForm({
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel htmlFor="email">Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <Input
+                      id="email"
+                      placeholder="Email"
+                      {...field}
+                      aria-invalid={errors.email ? "true" : "false"}
+                      aria-describedby={errors.email ? "email-error" : ""}
+                    />
                   </FormControl>
+                  {errors.email && (
+                    <div id="email-error" role="alert">
+                      {errors.email.message}
+                    </div>
+                  )}
                 </FormItem>
               )}
             />
@@ -117,10 +126,22 @@ function LoginForm({
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel htmlFor="password">Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder="Password"
+                      {...field}
+                      aria-invalid={errors.password ? "true" : "false"}
+                      aria-describedby={errors.password ? "password-error" : ""}
+                    />
                   </FormControl>
+                  {errors.password && (
+                    <div id="password-error" role="alert">
+                      {errors.password.message}
+                    </div>
+                  )}
                 </FormItem>
               )}
             />
@@ -131,7 +152,10 @@ function LoginForm({
         </form>
       </Form>
       <div className="flex justify-center">
-        <Button className="text-center mt-10" onClick={handleRegistrationClick}>
+        <Button
+          className="text-center mt-10"
+          onClick={handleRegistrationClick}
+        >
           Register
         </Button>
       </div>
