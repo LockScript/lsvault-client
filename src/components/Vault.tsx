@@ -3,14 +3,15 @@ import { VaultItem } from "@/app/page";
 import { encryptVault } from "@/crypto";
 import {
   Box,
+  Checkbox,
   FormControl,
   FormLabel,
   InputGroup,
+  Progress,
   Slider,
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
-  Checkbox,
 } from "@chakra-ui/react";
 import {
   CopyIcon,
@@ -25,7 +26,7 @@ import {
 import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import { toast } from "sonner";
+import zxcvbn from "zxcvbn";
 import FormWrapper from "./FormWrapper";
 import { Button } from "./ui/button";
 import {
@@ -38,6 +39,7 @@ import {
 } from "./ui/dialog";
 import { Input } from "./ui/input";
 import VaultSidebar from "./VaultSidebar";
+import { toast } from "sonner";
 
 function Vault({
   vault = [],
@@ -59,6 +61,16 @@ function Vault({
   const [includeSpecialChars, setIncludeSpecialChars] = useState(true);
   const [includeNumbers, setIncludeNumbers] = useState(true);
   const [avoidSimilarCharacters, setAvoidSimilarCharacters] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [showGeneratedPassword, setShowGeneratedPassword] = useState(false);
+
+  const handlePasswordChange = (password: string) => {
+    const { score } = zxcvbn(password);
+    setPasswordStrength(score);
+  };
+
+  const handleGeneratedPasswordVisibility = () =>
+    setShowGeneratedPassword(!showGeneratedPassword);
 
   const generatePassword = (
     includeSpecialChars: boolean,
@@ -92,6 +104,7 @@ function Vault({
     }
 
     setPassword(password);
+    handlePasswordChange(password);
   };
 
   const handleVisitWebsiteClick = (website: string) => {
@@ -183,21 +196,56 @@ function Vault({
                       Avoid similar characters
                     </Checkbox>
                     <Button
-                      onClick={() => generatePassword(includeSpecialChars, includeNumbers, avoidSimilarCharacters)}
+                      onClick={() =>
+                        generatePassword(
+                          includeSpecialChars,
+                          includeNumbers,
+                          avoidSimilarCharacters
+                        )
+                      }
                     >
                       Generate
                     </Button>
                     <div className="flex items-center">
                       <InputGroup size="md">
-                        <Input value={password} readOnly />
+                        <Input
+                          value={password}
+                          type={showGeneratedPassword ? "text" : "password"}
+                          readOnly
+                        />
                       </InputGroup>
                       <Button
                         size="icon"
-                        onClick={() => navigator.clipboard.writeText(password)}
+                        onClick={() => {
+                          navigator.clipboard.writeText(password);
+                          toast("Copied!")
+                        }}
                         className="p-2 ml-2"
                       >
                         <CopyIcon size={20} />
                       </Button>
+                      <Button
+                        size="icon"
+                        onClick={handleGeneratedPasswordVisibility}
+                        className="p-2 ml-2"
+                      >
+                        {showGeneratedPassword ? <Eye /> : <EyeOff />}
+                      </Button>
+                    </div>
+                    <div>
+                      <Progress
+                        value={passwordStrength * 25}
+                        max={100}
+                        colorScheme={
+                          passwordStrength === 0
+                            ? "red"
+                            : passwordStrength < 3
+                            ? "orange"
+                            : passwordStrength === 3
+                            ? "yellow"
+                            : "green"
+                        }
+                      />
                     </div>
                   </DialogContent>
                 </Dialog>

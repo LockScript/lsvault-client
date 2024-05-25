@@ -14,8 +14,11 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
+import { useClipboard, Tooltip } from "@chakra-ui/react";
 
 const VaultSidebar = () => {
+  const { hasCopied, onCopy } = useClipboard(getEmailFromToken() || "");
+
   function handleLogout(): void {
     sessionStorage.removeItem("vk");
     sessionStorage.removeItem("vault");
@@ -76,7 +79,12 @@ const VaultSidebar = () => {
                 <Label htmlFor="email" className="text-right">
                   Email
                 </Label>
-                <Input placeholder={getEmailFromToken() || ""} id="email" defaultValue={getEmailFromToken() || ""} className="col-span-3" />
+                <Input
+                  placeholder={getEmailFromToken() || ""}
+                  id="email"
+                  defaultValue={getEmailFromToken() || ""}
+                  className="col-span-3"
+                />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="password" className="text-right">
@@ -110,6 +118,15 @@ const VaultSidebar = () => {
         <Separator />
         <h1 className="text-center font-semibold">Categories</h1>
       </nav>
+      
+      <Tooltip label={hasCopied ? "Copied!" : "Click to copy"}>
+        <div
+          className="mt-auto text-center text-gray-500 cursor-pointer hover:text-gray-700 transition-colors duration-200"
+          onClick={onCopy}
+        >
+          {getEmailFromToken()}
+        </div>
+      </Tooltip>
     </div>
   );
 };
