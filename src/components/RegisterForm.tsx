@@ -1,5 +1,3 @@
-"use client";
-
 import { VaultItem } from "@/app/page";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -48,16 +46,15 @@ function RegisterForm({
         email,
         salt: actualSalt,
       });
-    
+
       window.sessionStorage.setItem("vk", vaultKey);
-    
+
       setVaultKey(vaultKey);
-    
+
       window.sessionStorage.setItem("vault", "");
-    
+
       setStep("vault");
     },
-    
 
     onError: (error: any) => {
       const errorMessage =
@@ -103,9 +100,14 @@ function RegisterForm({
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel htmlFor="email">Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <Input
+                      id="email"
+                      placeholder="Email"
+                      {...field}
+                      aria-label="Email"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -115,9 +117,15 @@ function RegisterForm({
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel htmlFor="password">Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder="Password"
+                      {...field}
+                      aria-label="Password"
+                    />
                   </FormControl>
                 </FormItem>
               )}
