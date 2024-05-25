@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useIdleTimer } from 'react-idle-timer';
 import { QueryClient, QueryClientProvider } from "react-query";
 import "./globals.css";
+import { LockStateProvider, useLockState } from "@/components/LockStateProvider";
 
 const inter = Montserrat({ subsets: ["latin"] });
 
@@ -20,35 +21,29 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [isLocked, setIsLocked] = useState(false);
+  return (
+    <LockStateProvider>
+      <QueryClientProvider client={queryClient}>
+        <html lang="en">
+          <body className={inter.className}>
+            <ChakraProvider>
+              <LockScreenWrapper>{children}</LockScreenWrapper>
+            </ChakraProvider>
+            <Toaster />
+          </body>
+        </html>
+      </QueryClientProvider>
+    </LockStateProvider>
+  );
+}
+
+function LockScreenWrapper({ children }: { children: React.ReactNode }) {
+  const { isLocked, setIsLocked } = useLockState();
   const autoLockSetting = useAutoLockSetting(getUserId() ?? "");
 
-  const handleOnIdle = () => {
-    setIsLocked(true);
-  };
-
-  const handleUnlock = () => {
-    setIsLocked(false);
-  };
-
-  useIdleTimer({
-    timeout: 1000 * 20,
-    onIdle: handleOnIdle,
-  });
-  return (
-    <QueryClientProvider client={queryClient}>
-      <html lang="en">
-        <body className={inter.className}>
-          <ChakraProvider>
-            {isLocked && autoLockSetting ? (
-              <LockScreen vaultKey="yourVaultKey" onUnlock={handleUnlock} />
-            ) : (
-              <main>{children}</main>
-            )}
-          </ChakraProvider>
-          <Toaster />
-        </body>
-      </html>
-    </QueryClientProvider>
+  return isLocked && autoLockSetting ? (
+    <LockScreen vaultKey="yourVaultKey" onUnlock={() => setIsLocked(false)} />
+  ) : (
+    <main>{children}</main>
   );
 }
