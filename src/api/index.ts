@@ -40,3 +40,27 @@ export function saveVault({ encryptedVault }: { encryptedVault: string }) {
         .put(vaultBase, { encryptedVault }, { withCredentials: true })
         .then((res) => res.data);
 }
+
+/**
+ * Sends a PUT request to update the user's email.
+ * @param {Object} payload - The payload containing the new email.
+ * @param {string} payload.newEmail - The new email for the user.
+ * @returns {Promise<any>} - A promise resolving to the response data.
+ */
+export function updateEmail(payload: { newEmail: string }) {
+    return axios
+        .put(`${userBase}/email`, payload, { withCredentials: true })
+        .then((res) => res.data);
+}
+
+/**
+ * Sends a PUT request to update the user's password.
+ * @param {Object} payload - The payload containing the new password.
+ * @param {string} payload.newPassword - The new password for the user.
+ * @returns {Promise<any>} - A promise resolving to the response data.
+ */
+export function updatePassword(payload: { newPassword: string }) {
+    return axios
+        .put(`${userBase}/password`, payload, { withCredentials: true })
+        .then((res) => res.data);
+}

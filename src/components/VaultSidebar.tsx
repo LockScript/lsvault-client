@@ -1,7 +1,9 @@
 "use client";
 
-import { LayoutDashboard, LogOut, Plus, Settings, User } from "lucide-react";
-import { Separator } from "./ui/separator";
+import { getEmailFromToken } from "@/lib/jwtUtils";
+import { DialogDescription, DialogTrigger } from "@radix-ui/react-dialog";
+import { LayoutDashboard, LogOut, Settings, User } from "lucide-react";
+import { Button } from "./ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,11 +11,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import { DialogDescription, DialogTrigger } from "@radix-ui/react-dialog";
-import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
+import { Label } from "./ui/label";
+import { Separator } from "./ui/separator";
 
 const VaultSidebar = () => {
   function handleLogout(): void {
@@ -22,7 +22,7 @@ const VaultSidebar = () => {
     window.location.reload();
   }
   return (
-    <div className="relative flex h-[calc(100vh-20rem)] w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border p-4 text-gray-700 shadow-xl shadow-blue-gray-900/5 sticky top-0">
+    <div className="flex h-[calc(100vh-20rem)] w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border p-4 text-gray-700 shadow-xl shadow-blue-gray-900/5 sticky top-0">
       <div className="p-4 mb-2">
         <h5 className="block font-extrabold text-2xl antialiased leading-snug tracking-normal text-blue-gray-900">
           LockScript
@@ -76,7 +76,7 @@ const VaultSidebar = () => {
                 <Label htmlFor="email" className="text-right">
                   Email
                 </Label>
-                <Input id="email" defaultValue="" className="col-span-3" />
+                <Input placeholder={getEmailFromToken() || ""} id="email" defaultValue={getEmailFromToken() || ""} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="password" className="text-right">
