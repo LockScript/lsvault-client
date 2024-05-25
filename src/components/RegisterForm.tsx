@@ -1,15 +1,16 @@
-import { VaultItem } from "@/app/page";
+"use client"
+
+import { registerUser } from "@/api";
+import { generateVaultKey, hashPassword } from "@/crypto";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
-import { toast } from "sonner";
-import { useMutation } from "react-query";
-import { loginUser, registerUser } from "@/api";
-import { decryptVault, generateVaultKey, hashPassword } from "@/crypto";
+import { Input } from "./ui/input";
 
 const FormSchema = z.object({
   email: z.string().email().min(4, {

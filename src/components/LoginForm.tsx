@@ -1,3 +1,5 @@
+"use client"
+
 import { VaultItem } from "@/app/page";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";

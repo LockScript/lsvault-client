@@ -1,3 +1,5 @@
+"use client"
+
 import { saveVault } from "@/api";
 import { VaultItem } from "@/app/page";
 import { encryptVault } from "@/crypto";
