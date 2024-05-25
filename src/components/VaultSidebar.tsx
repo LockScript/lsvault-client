@@ -25,15 +25,26 @@ const VaultSidebar = () => {
     window.location.reload();
   }
   return (
-    <div className="flex h-[calc(100vh-20rem)] w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border p-4 text-gray-700 shadow-xl shadow-blue-gray-900/5 sticky top-0">
+    <div
+      className="flex h-[calc(100vh-20rem)] w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border p-4 text-gray-700 shadow-xl shadow-blue-gray-900/5 sticky top-0"
+      role="navigation"
+      aria-label="Vault Sidebar"
+    >
       <div className="p-4 mb-2">
-        <h5 className="block font-extrabold text-2xl antialiased leading-snug tracking-normal text-blue-gray-900">
+        <h5
+          className="block font-extrabold text-2xl antialiased leading-snug tracking-normal text-blue-gray-900"
+          role="heading"
+          aria-level={1}
+        >
           LockScript
         </h5>
       </div>
-      <nav className="flex min-w-[240px] flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700">
+      <nav
+        className="flex min-w-[240px] flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700"
+        role="menu"
+      >
         <div
-          role="button"
+          role="menuitem"
           className="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
         >
           <div className="grid mr-4 place-items-center">
@@ -42,7 +53,7 @@ const VaultSidebar = () => {
           Dashboard
         </div>
         <div
-          role="button"
+          role="menuitem"
           className="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
         >
           <div className="grid mr-4 place-items-center">
@@ -54,7 +65,7 @@ const VaultSidebar = () => {
         <Dialog>
           <DialogTrigger asChild>
             <div
-              role="button"
+              role="menuitem"
               className="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
             >
               <div className="grid mr-4 place-items-center">
@@ -105,7 +116,7 @@ const VaultSidebar = () => {
         </Dialog>
 
         <div
-          role="button"
+          role="menuitem"
           className="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
           onClick={handleLogout}
         >
@@ -118,11 +129,13 @@ const VaultSidebar = () => {
         <Separator />
         <h1 className="text-center font-semibold">Categories</h1>
       </nav>
-      
+
       <Tooltip label={hasCopied ? "Copied!" : "Click to copy"}>
         <div
           className="mt-auto text-center text-gray-500 cursor-pointer hover:text-gray-700 transition-colors duration-200"
           onClick={onCopy}
+          role="button"
+          tabIndex={0}
         >
           {getEmailFromToken()}
         </div>
