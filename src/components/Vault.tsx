@@ -23,6 +23,7 @@ import {
   ExternalLink,
   Eye,
   EyeOff,
+  Lock,
   Plus,
   RefreshCw,
   Save,
@@ -49,6 +50,8 @@ import { Avatar } from "./ui/avatar";
 import Image from "next/image";
 import { getFavicon } from "@/lib/utils";
 import Favicon from "./Favicon";
+import { set } from "date-fns";
+import { useLockState } from "./LockStateProvider";
 
 function Vault({
   vault = [],
@@ -72,6 +75,7 @@ function Vault({
   const [avoidSimilarCharacters, setAvoidSimilarCharacters] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [showGeneratedPassword, setShowGeneratedPassword] = useState(false);
+  const { setIsLocked } = useLockState();
 
   const handlePasswordChange = (password: string) => {
     const { score } = zxcvbn(password);
@@ -258,79 +262,82 @@ function Vault({
                     </div>
                   </DialogContent>
                 </Dialog>
+                <Button size="icon" onClick={() => setIsLocked(true)}>
+                  <Lock />
+                </Button>
               </Box>
             </div>
 
             {fields.map((field, index) => {
-                return (
+              return (
                 <Box className="mt-4 mb-4 flex flex-end" key={field.id}>
                   <FormControl>
-                  <FormLabel htmlFor={`website-${index}`}>Website</FormLabel>
-                  <Flex>
-                    <Favicon website={field.website} />
+                    <FormLabel htmlFor={`website-${index}`}>Website</FormLabel>
+                    <Flex>
+                      <Favicon website={field.website} />
+                      <Input
+                        type="url"
+                        id={`website-${index}`}
+                        placeholder="Website"
+                        {...register(`vault.${index}.website`, {
+                          required: "Website is required.",
+                        })}
+                      />
+                    </Flex>
+                  </FormControl>
+                  <FormControl ml="2">
+                    <FormLabel htmlFor={`username-${index}`}>
+                      Username
+                    </FormLabel>
                     <Input
-                    type="url"
-                    id={`website-${index}`}
-                    placeholder="Website"
-                    {...register(`vault.${index}.website`, {
-                      required: "Website is required.",
-                    })}
+                      id={`username-${index}`}
+                      placeholder="Username"
+                      {...register(`vault.${index}.username`, {
+                        required: "Username is required.",
+                      })}
                     />
-                  </Flex>
                   </FormControl>
                   <FormControl ml="2">
-                  <FormLabel htmlFor={`username-${index}`}>
-                    Username
-                  </FormLabel>
-                  <Input
-                    id={`username-${index}`}
-                    placeholder="Username"
-                    {...register(`vault.${index}.username`, {
-                    required: "Username is required.",
-                    })}
-                  />
+                    <FormLabel htmlFor={`password-${index}`}>
+                      Password
+                    </FormLabel>
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      id={`password-${index}`}
+                      placeholder="Password"
+                      {...register(`vault.${index}.password`, {
+                        required: "Password is required.",
+                      })}
+                    />
                   </FormControl>
                   <FormControl ml="2">
-                  <FormLabel htmlFor={`password-${index}`}>
-                    Password
-                  </FormLabel>
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    id={`password-${index}`}
-                    placeholder="Password"
-                    {...register(`vault.${index}.password`, {
-                    required: "Password is required.",
-                    })}
-                  />
-                  </FormControl>
-                  <FormControl ml="2">
-                  <Button
-                    size={"icon"}
-                    className="mt-8"
-                    onClick={() => remove(index)}
-                    aria-label="Remove entry"
-                  >
-                    <X />
-                  </Button>
-                  <Button
-                    className="ml-2"
-                    onClick={() => setShowPassword(!showPassword)}
-                    size={"icon"}
-                    aria-label="Toggle password visibility"
-                  >
-                    {showPassword ? <Eye /> : <EyeOff />}
-                  </Button>
-                  <Button
-                    className="ml-2"
-                    onClick={() => handleVisitWebsiteClick(field.website)}
-                    size={"icon"}
-                    aria-label="Visit website"
-                  >
-                    <ExternalLink />
-                  </Button>
+                    <Button
+                      size={"icon"}
+                      className="mt-8"
+                      onClick={() => remove(index)}
+                      aria-label="Remove entry"
+                    >
+                      <X />
+                    </Button>
+                    <Button
+                      className="ml-2"
+                      onClick={() => setShowPassword(!showPassword)}
+                      size={"icon"}
+                      aria-label="Toggle password visibility"
+                    >
+                      {showPassword ? <Eye /> : <EyeOff />}
+                    </Button>
+                    <Button
+                      className="ml-2"
+                      onClick={() => handleVisitWebsiteClick(field.website)}
+                      size={"icon"}
+                      aria-label="Visit website"
+                    >
+                      <ExternalLink />
+                    </Button>
                   </FormControl>
                 </Box>
-                );
+              );
             })}
           </FormWrapper>
         </div>

@@ -18,7 +18,7 @@ function FormWrapper({
       p={{ base: 4, md: 8 }}
       rounded="md"
       as="form"
-      className="w-[1000px]"
+      className="w-[1000px] sm:max-w-full"
       {...props}
     >
       {children}

@@ -30,7 +30,7 @@ const LockScreen: React.FC<LockScreenProps> = ({ vaultKey, onUnlock }) => {
     >
       <Box p={5} shadow="md" borderWidth="1px">
         <div className="flex justify-center mb-10">
-          <Lock size={80} />
+          <Lock size={80} className="animate-shake" />
         </div>
 
         <Input
