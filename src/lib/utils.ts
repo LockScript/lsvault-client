@@ -2,6 +2,8 @@ import { getUserSettings } from "@/api";
 import { type ClassValue, clsx } from "clsx"
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge"
+import axios from 'axios';
+import cheerio from 'cheerio';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -20,4 +22,8 @@ export function useAutoLockSetting(userId: string) {
   }, [userId]);
 
   return autoLockSetting;
+}
+
+export async function getFavicon(url: string): Promise<string> {
+  return `https://s2.googleusercontent.com/s2/favicons?domain_url=${url}`;
 }

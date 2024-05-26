@@ -14,12 +14,11 @@ function FormWrapper({
 }: { children: React.ReactNode } & BoxProps) {
   return (
     <Box
-      w="100%"
-      maxW={{ base: "full", md: "container.sm" }}
       boxShadow="lg"
       p={{ base: 4, md: 8 }}
       rounded="md"
       as="form"
+      className="w-[1000px]"
       {...props}
     >
       {children}

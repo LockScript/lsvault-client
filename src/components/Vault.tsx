@@ -1,11 +1,14 @@
-"use client"
+/* eslint-disable @next/next/no-img-element */
+"use client";
 
 import { saveVault } from "@/api";
 import { VaultItem } from "@/app/page";
 import { encryptVault } from "@/crypto";
 import {
+  AvatarBadge,
   Box,
   Checkbox,
+  Flex,
   FormControl,
   FormLabel,
   InputGroup,
@@ -42,6 +45,10 @@ import {
 import { Input } from "./ui/input";
 import VaultSidebar from "./VaultSidebar";
 import { toast } from "sonner";
+import { Avatar } from "./ui/avatar";
+import Image from "next/image";
+import { getFavicon } from "@/lib/utils";
+import Favicon from "./Favicon";
 
 function Vault({
   vault = [],
@@ -220,7 +227,7 @@ function Vault({
                         size="icon"
                         onClick={() => {
                           navigator.clipboard.writeText(password);
-                          toast("Copied!")
+                          toast("Copied!");
                         }}
                         className="p-2 ml-2"
                       >
@@ -255,72 +262,75 @@ function Vault({
             </div>
 
             {fields.map((field, index) => {
-              return (
+                return (
                 <Box className="mt-4 mb-4 flex flex-end" key={field.id}>
                   <FormControl>
-                    <FormLabel htmlFor={`website-${index}`}>Website</FormLabel>
+                  <FormLabel htmlFor={`website-${index}`}>Website</FormLabel>
+                  <Flex>
+                    <Favicon website={field.website} />
                     <Input
-                      type="url"
-                      id={`website-${index}`}
-                      placeholder="Website"
-                      {...register(`vault.${index}.website`, {
-                        required: "Website is required.",
-                      })}
+                    type="url"
+                    id={`website-${index}`}
+                    placeholder="Website"
+                    {...register(`vault.${index}.website`, {
+                      required: "Website is required.",
+                    })}
                     />
+                  </Flex>
                   </FormControl>
                   <FormControl ml="2">
-                    <FormLabel htmlFor={`username-${index}`}>
-                      Username
-                    </FormLabel>
-                    <Input
-                      id={`username-${index}`}
-                      placeholder="Username"
-                      {...register(`vault.${index}.username`, {
-                        required: "Username is required.",
-                      })}
-                    />
+                  <FormLabel htmlFor={`username-${index}`}>
+                    Username
+                  </FormLabel>
+                  <Input
+                    id={`username-${index}`}
+                    placeholder="Username"
+                    {...register(`vault.${index}.username`, {
+                    required: "Username is required.",
+                    })}
+                  />
                   </FormControl>
                   <FormControl ml="2">
-                    <FormLabel htmlFor={`password-${index}`}>
-                      Password
-                    </FormLabel>
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      id={`password-${index}`}
-                      placeholder="Password"
-                      {...register(`vault.${index}.password`, {
-                        required: "Password is required.",
-                      })}
-                    />
+                  <FormLabel htmlFor={`password-${index}`}>
+                    Password
+                  </FormLabel>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    id={`password-${index}`}
+                    placeholder="Password"
+                    {...register(`vault.${index}.password`, {
+                    required: "Password is required.",
+                    })}
+                  />
                   </FormControl>
                   <FormControl ml="2">
-                    <Button
-                      size={"icon"}
-                      className="mt-8"
-                      onClick={() => remove(index)}
-                      aria-label="Remove entry"
-                    >
-                      <X />
-                    </Button>
-                    <Button
-                      className="ml-2"
-                      onClick={() => setShowPassword(!showPassword)}
-                      size={"icon"}
-                      aria-label="Toggle password visibility"
-                    >
-                      {showPassword ? <Eye /> : <EyeOff />}
-                    </Button>
-                    <Button
-                      className="ml-2"
-                      onClick={() => handleVisitWebsiteClick(field.website)}
-                      size={"icon"}
-                      aria-label="Visit website"
-                    >
-                      <ExternalLink />
-                    </Button>
+                  <Button
+                    size={"icon"}
+                    className="mt-8"
+                    onClick={() => remove(index)}
+                    aria-label="Remove entry"
+                  >
+                    <X />
+                  </Button>
+                  <Button
+                    className="ml-2"
+                    onClick={() => setShowPassword(!showPassword)}
+                    size={"icon"}
+                    aria-label="Toggle password visibility"
+                  >
+                    {showPassword ? <Eye /> : <EyeOff />}
+                  </Button>
+                  <Button
+                    className="ml-2"
+                    onClick={() => handleVisitWebsiteClick(field.website)}
+                    size={"icon"}
+                    aria-label="Visit website"
+                  >
+                    <ExternalLink />
+                  </Button>
                   </FormControl>
                 </Box>
-              );
+                );
             })}
           </FormWrapper>
         </div>
