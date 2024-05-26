@@ -83,6 +83,16 @@ export function uploadUserSettings(userId: string, settings: { [key: string]: st
         .then((res) => res.data);
 }
 
+export function validateUser(userId: string, password: string) {
+    const requestBody = {
+        userId,
+        password
+    }
+
+    return axios
+        .post(`${userBase}/validate`, requestBody, { withCredentials: true })
+}
+
 export async function getUserSettings(userId: string) {
     try {
         if (isAuthenticated()) {

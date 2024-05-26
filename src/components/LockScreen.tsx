@@ -4,6 +4,9 @@ import { Box, Button, Flex, Heading, Input } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { toast } from "./ui/use-toast";
 import { Lock } from "lucide-react";
+import { validateUser } from "@/api";
+import { getUserId } from "@/lib/jwtUtils";
+import { hashPassword } from "@/crypto";
 
 interface LockScreenProps {
   vaultKey: string;
@@ -13,12 +16,10 @@ interface LockScreenProps {
 const LockScreen: React.FC<LockScreenProps> = ({ vaultKey, onUnlock }) => {
   const [enteredKey, setEnteredKey] = useState("");
 
-  const handleUnlock = () => {
-    if (enteredKey === vaultKey) {
+  const handleUnlock = async () => {
+    const response = await validateUser(getUserId() ?? "", hashPassword(enteredKey));
+    if (response.status === 200) {
       onUnlock();
-      toast({ title: "Success", description: "Unlocking vault..." });
-    } else {
-      toast({ title: "Failed", description: "Invalid password." });
     }
   };
 
