@@ -65,7 +65,9 @@ function Vault({
       vault,
     },
   });
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean[]>(
+    vault.map(() => false)
+  );
   const { fields, append, remove } = useFieldArray({ control, name: "vault" });
   const mutation = useMutation(saveVault);
   const [passwordLength, setPasswordLength] = useState(8);
@@ -80,6 +82,14 @@ function Vault({
   const handlePasswordChange = (password: string) => {
     const { score } = zxcvbn(password);
     setPasswordStrength(score);
+  };
+
+  const handlePasswordVisibilityToggle = (index: number) => {
+    setShowPassword((prevState) => {
+      const newState = [...prevState];
+      newState[index] = !newState[index];
+      return newState;
+    });
   };
 
   const handleGeneratedPasswordVisibility = () =>
@@ -302,7 +312,7 @@ function Vault({
                       Password
                     </FormLabel>
                     <Input
-                      type={showPassword ? "text" : "password"}
+                      type={showPassword[index] ? "text" : "password"}
                       id={`password-${index}`}
                       placeholder="Password"
                       {...register(`vault.${index}.password`, {
@@ -321,11 +331,11 @@ function Vault({
                     </Button>
                     <Button
                       className="ml-2"
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick={() => handlePasswordVisibilityToggle(index)}
                       size={"icon"}
                       aria-label="Toggle password visibility"
                     >
-                      {showPassword ? <Eye /> : <EyeOff />}
+                      {showPassword[index] ? <Eye /> : <EyeOff />}
                     </Button>
                     <Button
                       className="ml-2"

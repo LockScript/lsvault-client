@@ -1,17 +1,18 @@
-"use client"
+"use client";
 
+import { loginUser } from "@/api";
 import { VaultItem } from "@/app/page";
+import { decryptVault, generateVaultKey, hashPassword } from "@/crypto";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
-import { toast } from "sonner";
-import { useMutation } from "react-query";
-import { loginUser } from "@/api";
-import { decryptVault, generateVaultKey, hashPassword } from "@/crypto";
+import { Input } from "./ui/input";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   email: z.string().email().min(4, {
@@ -39,6 +40,7 @@ function LoginForm({
     formState: { errors },
   } = useForm<{ email: string; password: string; hashedPassword: string }>();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const router = useRouter();
 
   const mutation = useMutation(loginUser, {
     onSuccess: ({ salt, vault }) => {
@@ -60,6 +62,7 @@ function LoginForm({
       window.sessionStorage.setItem("vault", JSON.stringify(decryptedVault));
 
       setStep("vault");
+      router.push("/");
     },
     onError: (error: any) => {
       const errorMessage =
@@ -154,10 +157,7 @@ function LoginForm({
         </form>
       </Form>
       <div className="flex justify-center">
-        <Button
-          className="text-center mt-10"
-          onClick={handleRegistrationClick}
-        >
+        <Button className="text-center mt-10" onClick={handleRegistrationClick}>
           Register
         </Button>
       </div>

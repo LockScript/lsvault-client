@@ -1,3 +1,4 @@
+import { isAuthenticated } from "@/lib/auth";
 import axios from "axios";
 
 const userBase = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/users`;
@@ -84,9 +85,13 @@ export function uploadUserSettings(userId: string, settings: { [key: string]: st
 
 export async function getUserSettings(userId: string) {
     try {
-        const response = await axios.get(`${userBase}/settings/${userId}`);
-        const userSettings = response.data;
-        return userSettings;
+        if (isAuthenticated()) {
+            const response = await axios.get(`${userBase}/settings/${userId}`);
+            const userSettings = response.data;
+            return userSettings;
+        } else {
+            return { autoLock: "false"}
+        }
     } catch (error) {
         console.error(`Failed to fetch user settings: ${error}`);
         throw error;
