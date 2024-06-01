@@ -1,9 +1,11 @@
 "use client";
 
+import { getUserSettings, uploadUserSettings } from "@/api";
 import { getEmailFromToken, getUserId } from "@/lib/jwtUtils";
 import { Checkbox, Tooltip, useClipboard } from "@chakra-ui/react";
 import { DialogDescription, DialogTrigger } from "@radix-ui/react-dialog";
 import { LayoutDashboard, LogOut, Settings, User } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -15,8 +17,6 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
-import { useEffect, useState } from "react";
-import { getUserSettings, uploadUserSettings } from "@/api";
 
 const VaultSidebar = () => {
   const { hasCopied, onCopy } = useClipboard(getEmailFromToken() || "");
@@ -47,7 +47,7 @@ const VaultSidebar = () => {
     >
       <div className="p-4 mb-2">
         <h5
-          className="block font-extrabold text-2xl antialiased leading-snug tracking-normal text-blue-gray-900"
+          className="block font-extrabold text-2xl antialiased leading-snug tracking-normal bg-gradient-to-r from-sky-500 via-purple-300 to-purple-500 text-transparent bg-clip-text text-center"
           role="heading"
           aria-level={1}
         >

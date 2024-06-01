@@ -9,7 +9,7 @@ export function loginUser(payload: { hashedPassword: string; email: string }) {
         .post<{ salt: string; vault: string }>(`${userBase}/login`, payload, {
             withCredentials: true,
         })
-        .then((res) => res.data);
+        .then((res) => res.data)
 }
 
 /**

@@ -1,6 +1,6 @@
-import React, { createContext, useState, useContext } from "react";
-import { useAutoLockSetting } from "@/lib/utils";
 import { getUserId } from "@/lib/jwtUtils";
+import { useAutoLockSetting } from "@/lib/utils";
+import React, { createContext, useContext, useState } from "react";
 import { useIdleTimer } from "react-idle-timer";
 
 interface LockStateContextProps {
@@ -12,7 +12,9 @@ const LockStateContext = createContext<LockStateContextProps | undefined>(
   undefined
 );
 
-export const LockStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const LockStateProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [isLocked, setIsLocked] = useState(false);
   const autoLockSetting = useAutoLockSetting(getUserId() ?? "");
 

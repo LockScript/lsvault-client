@@ -1,12 +1,11 @@
 "use client";
 
-import { Box, Button, Flex, Heading, Input } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { toast } from "./ui/use-toast";
-import { Lock } from "lucide-react";
 import { validateUser } from "@/api";
-import { getUserId } from "@/lib/jwtUtils";
 import { hashPassword } from "@/crypto";
+import { getUserId } from "@/lib/jwtUtils";
+import { Box, Button, Flex, Input } from "@chakra-ui/react";
+import { Lock } from "lucide-react";
+import React, { useState } from "react";
 
 interface LockScreenProps {
   vaultKey: string;
@@ -17,7 +16,10 @@ const LockScreen: React.FC<LockScreenProps> = ({ vaultKey, onUnlock }) => {
   const [enteredKey, setEnteredKey] = useState("");
 
   const handleUnlock = async () => {
-    const response = await validateUser(getUserId() ?? "", hashPassword(enteredKey));
+    const response = await validateUser(
+      getUserId() ?? "",
+      hashPassword(enteredKey)
+    );
     if (response.status === 200) {
       onUnlock();
     }

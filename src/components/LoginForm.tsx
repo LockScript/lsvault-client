@@ -13,6 +13,8 @@ import { Button } from "./ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
 import { Input } from "./ui/input";
 import { useRouter } from "next/navigation";
+import { Card, CardContent } from "./ui/card";
+import { Label } from "./ui/label";
 
 const FormSchema = z.object({
   email: z.string().email().min(4, {
@@ -98,70 +100,98 @@ function LoginForm({
   }
 
   return (
-    <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <h1 className="font-extrabold text-center text-5xl mt-6">Login</h1>
-          <div className="flex flex-col mt-10 items-center">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="email">Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      id="email"
-                      placeholder="Email"
-                      {...field}
-                      aria-invalid={errors.email ? "true" : "false"}
-                      aria-describedby={errors.email ? "email-error" : ""}
-                    />
-                  </FormControl>
-                  {errors.email && (
-                    <div id="email-error" role="alert">
-                      {errors.email.message}
-                    </div>
-                  )}
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="password">Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="Password"
-                      {...field}
-                      aria-invalid={errors.password ? "true" : "false"}
-                      aria-describedby={errors.password ? "password-error" : ""}
-                    />
-                  </FormControl>
-                  {errors.password && (
-                    <div id="password-error" role="alert">
-                      {errors.password.message}
-                    </div>
-                  )}
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="mt-10">
-              Login
-            </Button>
-          </div>
-        </form>
-      </Form>
-      <div className="flex justify-center">
-        <Button className="text-center mt-10" onClick={handleRegistrationClick}>
-          Register
-        </Button>
-      </div>
-    </>
+    <div className="bg-black flex min-h-screen items-center justify-center">
+      <Card className="w-full max-w-md">
+        <div className="flex justify-center py-6">
+          <MountainIcon className="h-8 w-8" />
+        </div>
+        <CardContent className="space-y-4">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <h1 className="font-extrabold text-center text-7xl py-10 bg-gradient-to-r from-sky-500 via-purple-300 to-purple-500 text-transparent bg-clip-text">
+                Login
+              </h1>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label htmlFor="email">Email</Label>
+                    <FormControl>
+                      <Input
+                        id="email"
+                        placeholder="Email"
+                        {...field}
+                        aria-invalid={errors.email ? "true" : "false"}
+                        aria-describedby={errors.email ? "email-error" : ""}
+                      />
+                    </FormControl>
+                    {errors.email && (
+                      <div id="email-error" role="alert">
+                        {errors.email.message}
+                      </div>
+                    )}
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label htmlFor="password">Password</Label>
+                    <FormControl>
+                      <Input
+                        id="password"
+                        type="password"
+                        placeholder="Password"
+                        {...field}
+                        aria-invalid={errors.password ? "true" : "false"}
+                        aria-describedby={
+                          errors.password ? "password-error" : ""
+                        }
+                      />
+                    </FormControl>
+                    {errors.password && (
+                      <div id="password-error" role="alert">
+                        {errors.password.message}
+                      </div>
+                    )}
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="mt-10 w-full">
+                Login
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+interface MountainIconProps {
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+function MountainIcon(props: MountainIconProps) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
+    </svg>
   );
 }
 

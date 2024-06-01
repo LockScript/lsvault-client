@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { registerUser } from "@/api";
 import { generateVaultKey, hashPassword } from "@/crypto";
